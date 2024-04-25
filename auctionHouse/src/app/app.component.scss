@@ -1,0 +1,95 @@
+.container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.logo {
+  max-width: 200px;
+  text-align: left;
+}
+
+.title {
+  font-size: 20px;
+  line-height: 1.2;
+  text-align: right;
+  color: #8c94ac;
+}
+
+form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px;
+  border-radius: 5px;
+  background-color: #cacbd5;
+}
+
+form div {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  color: #54547c;
+  margin-bottom: 10px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cacbd5;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+option {
+  background-color: #cacbd5;
+  color: #242c5c;
+}
+
+p {
+  margin-bottom: 5px;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+}
+
+button[type="submit"] {
+  width: 100%;
+  background-color: #242c5c;
+  color: #cacbd5;
+  font-size: 18px;
+  padding: 10px;
+}
+
+button[type="submit"]:disabled {
+  background-color: #6c708b;
+  color: #cacbd5;
+  cursor: not-allowed;
+}
+
+.submission-message {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px;
+  border-radius: 5px;
+  background-color: #cacbd5;
+  text-align: center;
+  color: #242c5c;
+  font-size: 24px;
+}

@@ -1,0 +1,65 @@
+<div class="container">
+    <div class="header">
+        <img src="./assets/qp7mhw6sbau9.png" alt="Auction House Logo" class="logo">
+        <h1 class="title">Kunstauktionshaus <br>
+            Georg Rehm <br>
+            Organisation von Auktionen GmbH</h1>
+    </div>
+
+    @if (submissionMessage) {<div class="submission-message" [innerHTML]="submissionMessage">
+    </div>}
+
+
+    @if (!submissionMessage) {
+    <form [formGroup]="auctionForm" (ngSubmit)="onSubmit()">
+        <div>
+            <label for="bidderNumber">Bidder Number:</label>
+            <input type="number" formControlName="bidderNumber" id="bidderNumber" readonly>
+        </div>
+
+        <div>
+            <label for="auctionNumber">Auction Number:</label>
+            <input type="number" formControlName="auctionNumber" id="auctionNumber" readonly>
+        </div>
+
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" formControlName="email" id="email">
+        </div>
+
+        <div>
+            <label>Please select your delivery method:</label>
+            <select formControlName="deliveryMethod" id="deliveryMethod">
+                @for (method of deliveryMethods; track $index) { <option [value]="method">{{ method }}</option>}
+
+            </select>
+            @if (auctionForm.get('deliveryMethod')?.invalid && auctionForm.get('deliveryMethod')?.touched) { <div>
+                <p style="color: red;">Please select a delivery method</p>
+            </div>}
+
+        </div>
+
+
+
+        @if (auctionForm.get('deliveryMethod')?.value === 'Pick up') {
+        <div>
+            <div>
+                <label for="pickupDate">Pickup Date:</label>
+                <input type="date" formControlName="pickupDate" id="pickupDate">
+
+
+            </div>
+            <div>
+                <label for="pickupInfo">Who will pick up: </label>
+                <input type="text" formControlName="pickupInfo" id="pickupInfo">
+            </div>
+        </div>
+        }
+
+
+        <button type="submit" [disabled]="auctionForm.invalid ">Submit</button>
+
+    </form>
+    }
+
+</div>
