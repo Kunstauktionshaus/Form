@@ -37,7 +37,9 @@ export class NinoxServiceService {
           const updatedFields = {
             Z: formData.email,
             R: method,
-            A1: formatDate(formData.pickupDate, 'yyyy-MM-dd', 'en-US'),
+            A1: formData.pickupDate
+              ? formatDate(formData.pickupDate, 'yyyy-MM-dd', 'en-US')
+              : '',
             B1: formData.pickupInfo,
           };
           return this.http
