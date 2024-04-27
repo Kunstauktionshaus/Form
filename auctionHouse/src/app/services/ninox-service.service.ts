@@ -1,22 +1,22 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, switchMap, throwError } from 'rxjs';
-import { environment, NINOX_API_Endpoint } from './enviroment';
+import { API_LINK } from '../enviroment';
+import moment from 'moment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NinoxServiceService {
-  private apiKey: string = environment.apiKey;
   constructor(private http: HttpClient) {}
 
   findBidderRecord(filters: {}): Observable<any> {
-    const headers = new HttpHeaders().set(
-      'Authorization',
-      `Bearer ${this.apiKey}`
-    );
-    const params = { filters: JSON.stringify(filters) };
-    return this.http.get<any>(NINOX_API_Endpoint, { headers, params });
+    let params = new HttpParams();
+    if (filters) {
+      params = params.append('filters', JSON.stringify(filters));
+    }
+
+    return this.http.get<any>(API_LINK, { params: params });
   }
 
   updateBidderRecord(formData: any): Observable<any> {
@@ -25,22 +25,23 @@ export class NinoxServiceService {
       switchMap((existingRecord) => {
         if (existingRecord.length > 0) {
           const recordId = existingRecord[0]._id;
+          let method = 0;
+          if (
+            formData.deliveryMethod === 'Pick up' ||
+            formData.deliveryMethod === 'Abholung'
+          ) {
+            method = 1;
+          } else {
+            method = 2;
+          }
           const updatedFields = {
             Z: formData.email,
-            R: formData.deliveryMethod === 'Pick up' ? 1 : 2,
-            A1: formData.pickupDate,
+            R: method,
+            A1: moment(formData.pickupDate).format('YYYY-MM-DD'),
             B1: formData.pickupInfo,
           };
           return this.http
-            .put(
-              `${NINOX_API_Endpoint}/${recordId}`,
-              { fields: updatedFields },
-              {
-                headers: new HttpHeaders()
-                  .set('Authorization', `Bearer ${this.apiKey}`)
-                  .set('Content-Type', 'application/json'),
-              }
-            )
+            .put(`${API_LINK}/${recordId}`, { fields: updatedFields })
             .pipe(
               catchError((error) => {
                 console.error('Error updating record:', error);

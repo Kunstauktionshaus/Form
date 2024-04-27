@@ -6,6 +6,17 @@
             Organisation von Auktionen GmbH</h1>
     </div>
 
+    <div class="switch-container">
+        <div class="language-switch">
+            <button value="DE" (click)="switchLanguage('de')"
+                [ngClass]="{ 'active-language': currentLang === 'de' }">DE</button>
+            <button (click)="switchLanguage('en')" [ngClass]="{ 'active-language': currentLang === 'en' }">EN</button>
+        </div>
+    </div>
+
+
+
+
     @if (submissionMessage) {<div class="submission-message" [innerHTML]="submissionMessage">
     </div>}
 
@@ -13,46 +24,59 @@
     @if (!submissionMessage) {
     <form [formGroup]="auctionForm" (ngSubmit)="onSubmit()">
         <div>
-            <label for="bidderNumber">Bidder Number:</label>
+            <label for="bidderNumber">{{ currentLang === 'en' ? 'Bidder Number' : 'Bieternummer' }}:</label>
             <input type="number" formControlName="bidderNumber" id="bidderNumber" readonly>
         </div>
 
         <div>
-            <label for="auctionNumber">Auction Number:</label>
+            <label for="auctionNumber">{{ currentLang === 'en' ? 'Auction Number' : 'Auktionsnummer' }}:</label>
             <input type="number" formControlName="auctionNumber" id="auctionNumber" readonly>
         </div>
 
         <div>
-            <label for="email">Email:</label>
+            <label for="email">{{ currentLang === 'en' ? 'Email' : 'E-Mail' }}:</label>
             <input type="email" formControlName="email" id="email">
         </div>
 
         <div>
-            <label>Please select your delivery method:</label>
-            <select formControlName="deliveryMethod" id="deliveryMethod">
-                @for (method of deliveryMethods; track $index) { <option [value]="method">{{ method }}</option>}
+            <label>{{ currentLang === 'en' ? 'Delivery Method' : 'Liefermethode' }}:</label>
 
-            </select>
-            @if (auctionForm.get('deliveryMethod')?.invalid && auctionForm.get('deliveryMethod')?.touched) { <div>
-                <p style="color: red;">Please select a delivery method</p>
-            </div>}
+            <mat-select class="select" formControlName="deliveryMethod" id="deliveryMethod">
+                @for (method of deliveryMethods; track $index) {
+                <mat-option [value]="method">{{method}}</mat-option>
+                }
+            </mat-select>
+
+
+            @if (auctionForm.get('deliveryMethod')?.invalid &&
+            auctionForm.get('deliveryMethod')?.touched)
+            {
+            <div>
+                <p style="color: red;">{{currentLang === 'en' ? "Please select a delivery method" : "Bitte wählen Sie
+                    eine Liefermethode" }}</p>
+            </div>
+            }
 
         </div>
 
 
 
-        @if (auctionForm.get('deliveryMethod')?.value === 'Pick up') {
+        @if (auctionForm.get('deliveryMethod')?.value === 'Pick up' || auctionForm.get('deliveryMethod')?.value
+        ==="Abholung") {
         <div>
-            <div>
-                <label for="pickupDate">Pickup Date:</label>
-                <input type="date" formControlName="pickupDate" id="pickupDate">
+            <label for="pickupDate">{{ currentLang === 'en' ? 'Pickup Date' : 'Abholdatum' }}:</label>
+            <mat-form-field>
+                <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker" formControlName="pickupDate"
+                    id="pickupDate" placeholder="MM/DD/YYYY">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
 
-
-            </div>
-            <div>
-                <label for="pickupInfo">Who will pick up: </label>
-                <input type="text" formControlName="pickupInfo" id="pickupInfo">
-            </div>
+                </ mat-form-field>
+                <div>
+                    <label for="pickupInfo">{{ currentLang === 'en' ? 'Pickup Info' : 'Abholinfo' }}:
+                    </label>
+                    <input type="text" formControlName="pickupInfo" id="pickupInfo">
+                </div>
         </div>
         }
 

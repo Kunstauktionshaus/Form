@@ -6,33 +6,46 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
-import { NinoxServiceService } from './ninox-service.service';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NinoxServiceService } from './services/ninox-service.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { CommonModule } from '@angular/common';
 
 interface QueryParams {
   bidderNumber?: string;
   auctionNumber?: string;
-  email?: string;
 }
 
 @Component({
   selector: 'app-root',
   standalone: true,
+  providers: [provideNativeDateAdapter()],
   imports: [
     RouterOutlet,
     ReactiveFormsModule,
-    MatDatepickerModule,
     MatFormFieldModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatInputModule,
+    CommonModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
   auctionForm: FormGroup;
-  deliveryMethods: string[] = ['Pick up', 'Shipping'];
+  deliveryMethods: string[] = ['Abholung', 'Versand'];
   queryParams?: QueryParams;
   submissionMessage: string | null = null;
+  currentLang: 'en' | 'de' = 'de';
+
+  myFilter = (d: Date | null): boolean => {
+    const day = (d || new Date()).getDay();
+    return day !== 0 && day !== 1 && day !== 6;
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -65,7 +78,7 @@ export class AppComponent implements OnInit {
     });
 
     this.auctionForm.get('deliveryMethod')?.valueChanges.subscribe((value) => {
-      if (value === 'Pick up') {
+      if (value === 'Pick up' || value === 'Abholung') {
         this.auctionForm
           .get('pickupDate')
           ?.setValidators([Validators.required]);
@@ -76,18 +89,44 @@ export class AppComponent implements OnInit {
     });
   }
 
+  switchLanguage(language: 'en' | 'de'): void {
+    this.currentLang = language;
+    this.updateDeliveryMethods();
+  }
+
+  updateDeliveryMethods(): void {
+    this.deliveryMethods =
+      this.currentLang === 'de'
+        ? ['Abholung', 'Versand']
+        : ['Pick up', 'Shipping'];
+  }
+
   onSubmit() {
     if (this.auctionForm.valid) {
       const formData = this.auctionForm.value;
+      console.log(formData.pickupDate.toLocaleDateString());
       this.service.updateBidderRecord(formData).subscribe(
         () => {
-          if (formData.deliveryMethod === 'Shipping') {
-            this.submissionMessage =
-              'Thank you!<br> Please await a new email with the shipping cost.';
-          } else if (formData.deliveryMethod === 'Pick up') {
-            this.submissionMessage = `Thank you!<br> We look forward to seeing you at our auction house on ${new Date(
-              formData.pickupDate
-            ).toLocaleDateString()}.`;
+          if (
+            formData.deliveryMethod === 'Shipping' ||
+            formData.deliveryMethod === 'Versand'
+          ) {
+            this.currentLang === 'en'
+              ? (this.submissionMessage =
+                  'Thank you!<br> Please await a new email with the shipping cost.')
+              : (this.submissionMessage =
+                  'Vielen Dank für Ihre Auswahl!<br> Innerhalb der nächsten Woche erhalten sie eine Mail mit einem Kostenangebot für den Versand von uns.');
+          } else if (
+            formData.deliveryMethod === 'Pick up' ||
+            formData.deliveryMethod === 'Abholung'
+          ) {
+            this.currentLang === 'en'
+              ? (this.submissionMessage = `Thank you!<br> We look forward to seeing you at our auction house on ${new Date(
+                  formData.pickupDate
+                ).toLocaleDateString()}.`)
+              : (this.submissionMessage = `Vielen Dank für Ihre Auswahl! <br> Wir freuen uns darauf, Sie in unserem Auktionshaus am ${new Date(
+                  formData.pickupDate
+                ).toLocaleDateString()}.`);
           }
         },
         (error) => {
