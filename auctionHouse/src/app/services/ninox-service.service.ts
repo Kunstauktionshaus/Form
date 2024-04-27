@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, switchMap, throwError } from 'rxjs';
 import { API_LINK } from '../enviroment';
-import moment from 'moment';
+import { formatDate } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +37,7 @@ export class NinoxServiceService {
           const updatedFields = {
             Z: formData.email,
             R: method,
-            A1: moment(formData.pickupDate).format('YYYY-MM-DD'),
+            A1: formatDate(formData.pickupDate, 'yyyy-MM-dd', 'en-US'),
             B1: formData.pickupInfo,
           };
           return this.http

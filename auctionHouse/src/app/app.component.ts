@@ -104,7 +104,6 @@ export class AppComponent implements OnInit {
   onSubmit() {
     if (this.auctionForm.valid) {
       const formData = this.auctionForm.value;
-      console.log(formData.pickupDate.toLocaleDateString());
       this.service.updateBidderRecord(formData).subscribe(
         () => {
           if (
