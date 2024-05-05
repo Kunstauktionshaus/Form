@@ -37,7 +37,7 @@ interface QueryParams {
 })
 export class AppComponent implements OnInit {
   auctionForm: FormGroup;
-  deliveryMethods: string[] = ['Abholung', 'Versand'];
+  deliveryMethods: string[] = ['Abholung', 'Versand', 'Mail Boxes Etc.'];
   queryParams?: QueryParams;
   submissionMessage: string | null = null;
   currentLang: 'en' | 'de' = 'de';
@@ -56,6 +56,7 @@ export class AppComponent implements OnInit {
       bidderNumber: [{ value: '' }, Validators.required],
       auctionNumber: [{ value: '' }, Validators.required],
       email: ['', [Validators.email]],
+      comments: [''],
       deliveryMethod: ['', Validators.required],
       pickupDate: [''],
       pickupInfo: [''],
@@ -97,8 +98,8 @@ export class AppComponent implements OnInit {
   updateDeliveryMethods(): void {
     this.deliveryMethods =
       this.currentLang === 'de'
-        ? ['Abholung', 'Versand']
-        : ['Pick up', 'Shipping'];
+        ? ['Abholung', 'Versand', 'Mail Boxes Etc.']
+        : ['Pick up', 'Shipping', 'Mail Boxes Etc'];
   }
 
   onSubmit() {
@@ -108,7 +109,8 @@ export class AppComponent implements OnInit {
         () => {
           if (
             formData.deliveryMethod === 'Shipping' ||
-            formData.deliveryMethod === 'Versand'
+            formData.deliveryMethod === 'Versand' ||
+            formData.deliveryMethod === 'Mail Boxes Etc.'
           ) {
             this.currentLang === 'en'
               ? (this.submissionMessage =

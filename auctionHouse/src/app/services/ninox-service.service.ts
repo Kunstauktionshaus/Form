@@ -20,7 +20,7 @@ export class NinoxServiceService {
   }
 
   updateBidderRecord(formData: any): Observable<any> {
-    const filters = { F: formData.auctionNumber, A: formData.bidderNumber };
+    const filters = { A: formData.auctionNumber, B: formData.bidderNumber };
     return this.findBidderRecord(filters).pipe(
       switchMap((existingRecord) => {
         if (existingRecord.length > 0) {
@@ -31,16 +31,22 @@ export class NinoxServiceService {
             formData.deliveryMethod === 'Abholung'
           ) {
             method = 1;
-          } else {
+          } else if (
+            formData.deliveryMethod === 'Shipping' ||
+            formData.deliveryMethod === 'Versand'
+          ) {
             method = 2;
+          } else {
+            method = 4;
           }
           const updatedFields = {
-            Z: formData.email,
-            R: method,
-            A1: formData.pickupDate
+            K: formData.email,
+            N1: formData.comments,
+            N: method,
+            L: formData.pickupDate
               ? formatDate(formData.pickupDate, 'yyyy-MM-dd', 'en-US')
               : '',
-            B1: formData.pickupInfo,
+            M: formData.pickupInfo,
           };
           return this.http
             .put(`${API_LINK}/${recordId}`, { fields: updatedFields })
