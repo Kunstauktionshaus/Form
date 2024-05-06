@@ -41,6 +41,7 @@ export class AppComponent implements OnInit {
   queryParams?: QueryParams;
   submissionMessage: string | null = null;
   currentLang: 'en' | 'de' = 'de';
+  shippingCase: number = 1;
 
   myFilter = (d: Date | null): boolean => {
     const day = (d || new Date()).getDay();
@@ -68,8 +69,12 @@ export class AppComponent implements OnInit {
       const client = params['client'];
 
       if (client) {
-        const [auctionNumber, bidderNumber] = client.split('-');
-        if (auctionNumber && bidderNumber) {
+        const [auctionNumber, bidderNumber, shippingCase] = client.split('-');
+        if (auctionNumber && bidderNumber && shippingCase) {
+          this.shippingCase = +shippingCase;
+          if (this.shippingCase === 3) {
+            this.deliveryMethods = ['Abholung', 'Mail Boxes Etc.'];
+          }
           this.auctionForm.patchValue({
             bidderNumber,
             auctionNumber,

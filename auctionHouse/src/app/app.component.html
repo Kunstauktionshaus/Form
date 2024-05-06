@@ -20,6 +20,11 @@
     @if (submissionMessage) {<div class="submission-message" [innerHTML]="submissionMessage">
     </div>}
 
+    @if(shippingCase===2){
+    <div class="warning">{{currentLang === 'en' ? 'Warning: Some of your purchased items cannot be shipped by the
+        auction house' :
+        'Achtung: Nicht alle Objekte Ihres Einkaufs können vom Auktionshaus verschickt werden.'}}</div>
+    }
 
     @if (!submissionMessage) {
     <form [formGroup]="auctionForm" (ngSubmit)="onSubmit()">
