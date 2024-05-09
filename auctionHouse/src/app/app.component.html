@@ -20,13 +20,14 @@
     @if (submissionMessage) {<div class="submission-message" [innerHTML]="submissionMessage">
     </div>}
 
+
+
+    @if (!submissionMessage) {
     @if(shippingCase===2){
     <div class="warning">{{currentLang === 'en' ? 'Warning: Some of your purchased items cannot be shipped by the
         auction house' :
         'Achtung: Nicht alle Objekte Ihres Einkaufs können vom Auktionshaus verschickt werden.'}}</div>
     }
-
-    @if (!submissionMessage) {
     <form [formGroup]="auctionForm" (ngSubmit)="onSubmit()">
         <div>
             <label for="bidderNumber">{{ currentLang === 'en' ? 'Bidder Number' : 'Bieternummer' }}:</label>
@@ -69,6 +70,27 @@
 
         </div>
 
+
+        @if (auctionForm.get('deliveryMethod')?.value === 'Shipping' || auctionForm.get('deliveryMethod')?.value
+        ==="Versand" && shippingCase===2) {
+        <div class="warning">{{currentLang === 'en' ? 'Select pick up date for items that cannot be shipped' :
+            'Wählen Sie das Abholdatum für Objekte, die nicht versandt werden können'}}</div>
+        <div>
+            <label for="pickupDate">{{ currentLang === 'en' ? 'Pickup Date' : 'Abholdatum' }}:</label>
+            <mat-form-field>
+                <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker" formControlName="pickupDate"
+                    id="pickupDate" placeholder="MM/DD/YYYY">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+
+                </ mat-form-field>
+                <div>
+                    <label for="pickupInfo">{{ currentLang === 'en' ? 'Pickup Info' : 'Abholinfo' }}:
+                    </label>
+                    <input type="text" formControlName="pickupInfo" id="pickupInfo">
+                </div>
+        </div>
+        }
 
 
         @if (auctionForm.get('deliveryMethod')?.value === 'Pick up' || auctionForm.get('deliveryMethod')?.value
