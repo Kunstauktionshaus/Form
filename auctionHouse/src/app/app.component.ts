@@ -13,6 +13,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
+import { CountryGroup, countries } from './countries';
 
 interface QueryParams {
   bidderNumber?: string;
@@ -37,6 +38,7 @@ interface QueryParams {
 })
 export class AppComponent implements OnInit {
   auctionForm: FormGroup;
+  countries: CountryGroup[] = countries;
   deliveryMethods: string[] = ['Abholung', 'Versand', 'Mail Boxes Etc.'];
   queryParams?: QueryParams;
   submissionMessage: string | null = null;
@@ -61,6 +63,12 @@ export class AppComponent implements OnInit {
       deliveryMethod: ['', Validators.required],
       pickupDate: [''],
       pickupInfo: [''],
+      street: [''],
+      houseNumber: [''],
+      postalCode: [''],
+      city: [''],
+      country: [''],
+      countryCode: [''],
     });
   }
 

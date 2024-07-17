@@ -5,7 +5,7 @@
     width: 100px;
     button {
       width: 50%;
-      padding: 10px;
+      padding: 8px;
       border: none;
       background-color: #cacbd5;
       cursor: pointer;
@@ -22,16 +22,16 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 
   .logo {
-    max-width: 200px;
+    max-width: 150px;
     text-align: left;
   }
 
   .title {
-    font-size: 20px;
-    line-height: 1.2;
+    font-size: 18px;
+    line-height: 1;
     text-align: right;
     color: #8c94ac;
   }
@@ -41,30 +41,30 @@
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  padding: 40px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
   form {
     max-width: 100%;
-    padding: 30px;
+    padding: 20px;
     border-radius: 5px;
     background-color: #cacbd5;
 
     div {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
 
       label {
         display: block;
         font-weight: bold;
         color: #54547c;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
       }
 
       input,
       mat-select {
         width: 100%;
-        padding: 10px;
+        padding: 8px;
         background-color: #ffffff;
         border: 1px solid #cacbd5;
         border-radius: 4px;
@@ -85,7 +85,7 @@
       background-color: #242c5c;
       color: #cacbd5;
       font-size: 18px;
-      padding: 10px;
+      padding: 8px;
       border: none;
       border-radius: 4px;
       cursor: pointer;
@@ -109,7 +109,7 @@
   .submission-message {
     max-width: 100%;
     margin: 0 auto;
-    padding: 30px;
+    padding: 20px;
     border-radius: 5px;
     background-color: #cacbd5;
     text-align: center;

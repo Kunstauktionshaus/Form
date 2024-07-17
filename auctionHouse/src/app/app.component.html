@@ -63,16 +63,45 @@
             auctionForm.get('deliveryMethod')?.touched)
             {
             <div>
-                <p style="color: red;">{{currentLang === 'en' ? "Please select a delivery method" : "Bitte wählen Sie
-                    eine Liefermethode" }}</p>
+                <p style="color: red;">{{currentLang === 'en' ? "Please select a delivery method" : "Bitte wählen
+                    Sieeine Liefermethode" }}</p>
             </div>
             }
 
         </div>
 
-
         @if (auctionForm.get('deliveryMethod')?.value === 'Shipping' || auctionForm.get('deliveryMethod')?.value
-        ==="Versand" && shippingCase===2) {
+        ==="Versand") {
+        <div>
+            <div>
+                <label for="street">{{ currentLang === 'en' ? 'Street' : 'Straße' }}:</label>
+                <input type="text" formControlName="street" id="street">
+            </div>
+            <div>
+                <label for="houseNumber">{{ currentLang === 'en' ? 'House Number' : 'Hausnummer' }}:</label>
+                <input type="text" formControlName="houseNumber" id="houseNumber">
+            </div>
+            <div>
+                <label for="postalCode">{{ currentLang === 'en' ? 'Postal Code' : 'PLZ' }}:</label>
+                <input type="text" formControlName="postalCode" id="postalCode">
+            </div>
+            <div>
+                <label for="city">{{ currentLang === 'en' ? 'City' : 'Stadt' }}:</label>
+                <input type="text" formControlName="city" id="city">
+            </div>
+            <div>
+                <label>{{ currentLang === 'en' ? 'Country' : 'Land' }}</label>
+                <mat-select class="select" formControlName="country">
+                    <mat-optgroup *ngFor="let group of countries" [label]="group.name">
+                        <mat-option *ngFor="let country of group.countries" [value]="country.code">
+                            {{ country.name }} ({{ country.code }})
+                        </mat-option>
+                    </mat-optgroup>
+                </mat-select>
+            </div>
+        </div>
+
+        @if (shippingCase===2) {
         <div class="warning">{{currentLang === 'en' ? 'Select pick up date for items that cannot be shipped' :
             'Wählen Sie das Abholdatum für Objekte, die nicht versandt werden können'}}</div>
         <div>
@@ -92,6 +121,8 @@
         </div>
         }
 
+
+        }
 
         @if (auctionForm.get('deliveryMethod')?.value === 'Pick up' || auctionForm.get('deliveryMethod')?.value
         ==="Abholung") {

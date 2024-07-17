@@ -47,6 +47,11 @@ export class NinoxServiceService {
               ? formatDate(formData.pickupDate, 'yyyy-MM-dd', 'en-US')
               : '',
             M: formData.pickupInfo,
+            I: formData.street,
+            W2: formData.houseNumber,
+            D2: formData.postalCode,
+            C2: formData.city,
+            E2: formData.country,
           };
           return this.http
             .put(`${API_LINK}/${recordId}`, { fields: updatedFields })
