@@ -9,7 +9,7 @@ import { formatDate } from '@angular/common';
 })
 export class NinoxServiceService {
   constructor(private http: HttpClient) {}
-
+  //
   findBidderRecord(filters: {}): Observable<any> {
     let params = new HttpParams();
     if (filters) {
