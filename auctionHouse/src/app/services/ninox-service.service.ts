@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, switchMap, throwError } from 'rxjs';
+import { Observable, catchError, map, switchMap, throwError } from 'rxjs';
 import { API_LINK } from '../enviroment';
 import { formatDate } from '@angular/common';
 
@@ -56,6 +56,10 @@ export class NinoxServiceService {
           return this.http
             .put(`${API_LINK}/${recordId}`, { fields: updatedFields })
             .pipe(
+              map(() => ({
+                _id: recordId,
+                message: 'Record updated successfully',
+              })),
               catchError((error) => {
                 console.error('Error updating record:', error);
                 return throwError('Error updating record');
