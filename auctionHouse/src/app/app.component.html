@@ -30,19 +30,28 @@
     }
     <form [formGroup]="auctionForm" (ngSubmit)="onSubmit()">
         <div>
-            <label for="bidderNumber">{{ currentLang === 'en' ? 'Bidder Number' : 'Bieternummer' }}:</label>
+            <label for="bidderNumber">{{ currentLang === 'en' ? 'Bidder Number' : 'Bieternummer' }}*:</label>
             <input type="number" formControlName="bidderNumber" id="bidderNumber" readonly>
         </div>
 
         <div>
-            <label for="auctionNumber">{{ currentLang === 'en' ? 'Auction Number' : 'Auktionsnummer' }}:</label>
+            <label for="auctionNumber">{{ currentLang === 'en' ? 'Auction Number' : 'Auktionsnummer' }}*:</label>
             <input type="number" formControlName="auctionNumber" id="auctionNumber" readonly>
         </div>
 
         <div>
-            <label for="email">{{ currentLang === 'en' ? 'Email' : 'E-Mail' }}:</label>
+            <label for="email">{{ currentLang === 'en' ? 'Email' : 'E-Mail' }}*:</label>
             <input type="email" formControlName="email" id="email">
         </div>
+        @if (auctionForm.get('email')?.invalid &&
+        auctionForm.get('email')?.touched)
+        {
+        <div>
+            <p style="color: red;">{{currentLang === 'en' ? "Please enter only one valid email address (e.g.,
+                name@example.com)." : "Bitte geben Sie nur eine gültige E-Mail-Adresse ein (z. B. name@example.com)." }}
+            </p>
+        </div>
+        }
         <div>
             <label for="comments">{{ currentLang === 'en' ? 'Comments' : 'Kommentar' }}:
             </label>
@@ -50,7 +59,7 @@
         </div>
 
         <div>
-            <label>{{ currentLang === 'en' ? 'Delivery Method' : 'Liefermethode' }}:</label>
+            <label>{{ currentLang === 'en' ? 'Delivery Method' : 'Liefermethode' }}*:</label>
 
             <mat-select class="select" formControlName="deliveryMethod" id="deliveryMethod">
                 @for (method of deliveryMethods; track $index) {
@@ -74,24 +83,24 @@
         ==="Versand") {
         <div>
             <div>
-                <label for="street">{{ currentLang === 'en' ? 'Street' : 'Straße' }}:</label>
-                <input type="text" formControlName="street" id="street">
+                <label for="street">{{ currentLang === 'en' ? 'Street' : 'Straße' }}*:</label>
+                <input type="text" formControlName="street" id="street" required>
             </div>
             <div>
-                <label for="houseNumber">{{ currentLang === 'en' ? 'House Number' : 'Hausnummer' }}:</label>
-                <input type="text" formControlName="houseNumber" id="houseNumber">
+                <label for="houseNumber">{{ currentLang === 'en' ? 'House Number' : 'Hausnummer' }}*:</label>
+                <input type="text" formControlName="houseNumber" id="houseNumber" required>
             </div>
             <div>
-                <label for="postalCode">{{ currentLang === 'en' ? 'Postal Code' : 'PLZ' }}:</label>
-                <input type="text" formControlName="postalCode" id="postalCode">
+                <label for="postalCode">{{ currentLang === 'en' ? 'Postal Code' : 'PLZ' }}*:</label>
+                <input type="text" formControlName="postalCode" id="postalCode" required>
             </div>
             <div>
-                <label for="city">{{ currentLang === 'en' ? 'City' : 'Stadt' }}:</label>
-                <input type="text" formControlName="city" id="city">
+                <label for="city">{{ currentLang === 'en' ? 'City' : 'Stadt' }}*:</label>
+                <input type="text" formControlName="city" id="city" required>
             </div>
             <div>
-                <label>{{ currentLang === 'en' ? 'Country' : 'Land' }}</label>
-                <mat-select class="select" formControlName="country">
+                <label>{{ currentLang === 'en' ? 'Country' : 'Land' }}*:</label>
+                <mat-select class="select" formControlName="country" required>
                     <mat-optgroup *ngFor="let group of countries" [label]="group.name">
                         <mat-option *ngFor="let country of group.countries" [value]="country.code">
                             {{ country.name }} ({{ country.code }})
@@ -105,10 +114,10 @@
         <div class="warning">{{currentLang === 'en' ? 'Select pick up date for items that cannot be shipped' :
             'Wählen Sie das Abholdatum für Objekte, die nicht versandt werden können'}}</div>
         <div>
-            <label for="pickupDate">{{ currentLang === 'en' ? 'Pickup Date' : 'Abholdatum' }}:</label>
+            <label for="pickupDate">{{ currentLang === 'en' ? 'Pickup Date' : 'Abholdatum' }}*:</label>
             <mat-form-field>
-                <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker" formControlName="pickupDate"
-                    id="pickupDate" placeholder="MM/DD/YYYY">
+                <input required matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker"
+                    formControlName="pickupDate" id="pickupDate" placeholder="MM/DD/YYYY">
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
 
@@ -127,10 +136,10 @@
         @if (auctionForm.get('deliveryMethod')?.value === 'Pick up' || auctionForm.get('deliveryMethod')?.value
         ==="Abholung") {
         <div>
-            <label for="pickupDate">{{ currentLang === 'en' ? 'Pickup Date' : 'Abholdatum' }}:</label>
+            <label for="pickupDate">{{ currentLang === 'en' ? 'Pickup Date' : 'Abholdatum' }}*:</label>
             <mat-form-field>
-                <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker" formControlName="pickupDate"
-                    id="pickupDate" placeholder="MM/DD/YYYY">
+                <input required matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker"
+                    formControlName="pickupDate" id="pickupDate" placeholder="MM/DD/YYYY">
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
 
